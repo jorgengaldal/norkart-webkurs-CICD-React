@@ -92,14 +92,14 @@ export const MapLibreMap = () => {
             </>
           );
         })}
-        <Overlay>
+        <Overlay style={{ zIndex: 1000 }}>
           <h2>Live Aircraft Around Washington DC</h2>
           <p>
             Click on aircraft markers to see flight details. Data updates every
             10 seconds.
           </p>
         </Overlay>
-        <Overlay>
+        <Overlay style={{ zIndex: 1000 }}>
           <h2>Når skjedde forbrytelsen:</h2>
           <p style={{ backgroundColor: tidspunkt.DAY }}>Dag</p>
           <p style={{ backgroundColor: tidspunkt.EVENING, color: '#FFF' }}>
