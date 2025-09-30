@@ -1,6 +1,6 @@
 import { LngLat, type MapLayerMouseEvent } from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
-import { RMap, useMap } from 'maplibre-react-components';
+import { RMap, RPopup, useMap } from 'maplibre-react-components';
 import { getHoydeFromPunkt } from '../api/getHoydeFromPunkt';
 import { useEffect, useState } from 'react';
 import { Overlay } from './Overlay';
@@ -24,6 +24,22 @@ export const MapLibreMap = () => {
     setClickPoint(new LngLat(e.lngLat.lng, e.lngLat.lat));
   };
 
+  const [crimes, setCrimes] = useState<{ [key: string]: string }[]>([]);
+
+  const crime_emojies = {
+    'ASSAULT W/DANGEROUS WEAPON': '🗡️',
+    'THEFT/OTHER': '💰',
+  };
+
+  useEffect(() => {
+    const API =
+      'https://opendata.dc.gov/api/download/v1/items/dc3289eab3d2400ea49c154863312434/geojson?layers=8';
+    fetch(API)
+      .then((res) => res.json())
+      .then((res) => {
+        setCrimes(res.features.slice(0, 100));
+      });
+  }, []);
   return (
     <RMap
       minZoom={6}
@@ -35,9 +51,22 @@ export const MapLibreMap = () => {
       }}
       onClick={onMapClick}
     >
+      {crimes.map((feature: { [key: string]: string }) => {
+        return (
+          <RPopup
+            latitude={feature.properties.LATITUDE}
+            longitude={feature.properties.LONGITUDE}
+          >
+            {crime_emojies[feature.properties.OFFENSE]}
+          </RPopup>
+        );
+      })}
       <Overlay>
         <h2>Dette er et overlay</h2>
         <p>Legg til funksjonalitet knyttet til kartet.</p>
+        LONG: {clickPoint?.lng}
+        <br />
+        LONG: {clickPoint?.lat}
       </Overlay>
       <DrawComponent />
     </RMap>
