@@ -89,17 +89,20 @@ export const MapLibreMap = () => {
           );
         })}
         <Overlay>
-          <h2>Dette er et overlay</h2>
-          <p>Legg til funksjonalitet knyttet til kartet.</p>
-          LONG: {clickPoint?.lng}
-          <br />
-          LAT: {clickPoint?.lat}
-        </Overlay>
-        <Overlay>
           <h2>Live Aircraft Around Washington DC</h2>
           <p>
             Click on aircraft markers to see flight details. Data updates every
             10 seconds.
+          </p>
+        </Overlay>
+        <Overlay>
+          <h2>Når skjedde forbrytelsen:</h2>
+          <p style={{ backgroundColor: tidspunkt.DAY }}>Dag</p>
+          <p style={{ backgroundColor: tidspunkt.EVENING, color: '#FFF' }}>
+            Kveld
+          </p>
+          <p style={{ backgroundColor: tidspunkt.MIDNIGHT, color: '#FFF' }}>
+            Natt
           </p>
         </Overlay>
         <DrawComponent />
