@@ -1,12 +1,20 @@
 import { LngLat, type MapLayerMouseEvent } from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
-import { RMap, RPopup, useMap } from 'maplibre-react-components';
+import {
+  markerPopupOffset,
+  RMap,
+  RMarker,
+  RPopup,
+  useMap,
+} from 'maplibre-react-components';
 import { getHoydeFromPunkt } from '../api/getHoydeFromPunkt';
 import { useEffect, useState } from 'react';
 import { Overlay } from './Overlay';
 import DrawComponent from './DrawComponent';
+import AircraftLayer from './AircraftLayer';
+import AircraftStatus from './AircraftStatus';
 
-const TRONDHEIM_COORDS: [number, number] = [10.40565401, 63.4156575];
+const WASHINGTON_DC_COORDS: [number, number] = [-77.0369, 38.9072];
 
 export const MapLibreMap = () => {
   const [pointHoyde, setPointHoydeAtPunkt] = useState<number | undefined>(
@@ -41,35 +49,53 @@ export const MapLibreMap = () => {
       });
   }, []);
   return (
-    <RMap
-      minZoom={6}
-      initialCenter={TRONDHEIM_COORDS}
-      initialZoom={12}
-      mapStyle="https://openmaptiles.geo.data.gouv.fr/styles/osm-bright/style.json"
-      style={{
-        height: `calc(100dvh - var(--header-height))`,
-      }}
-      onClick={onMapClick}
-    >
-      {crimes.map((feature: { [key: string]: string }) => {
-        return (
-          <RPopup
-            latitude={feature.properties.LATITUDE}
-            longitude={feature.properties.LONGITUDE}
-          >
-            {crime_emojies[feature.properties.OFFENSE]}
-          </RPopup>
-        );
-      })}
-      <Overlay>
-        <h2>Dette er et overlay</h2>
-        <p>Legg til funksjonalitet knyttet til kartet.</p>
-        LONG: {clickPoint?.lng}
-        <br />
-        LONG: {clickPoint?.lat}
-      </Overlay>
-      <DrawComponent />
-    </RMap>
+    <div style={{ position: 'relative' }}>
+      <RMap
+        minZoom={6}
+        initialCenter={WASHINGTON_DC_COORDS}
+        initialZoom={12}
+        mapStyle="https://openmaptiles.geo.data.gouv.fr/styles/osm-bright/style.json"
+        style={{
+          height: `calc(100dvh - var(--header-height))`,
+        }}
+        onClick={onMapClick}
+      >
+        {crimes.map((feature: { [key: string]: string }) => {
+          return (
+            <>
+              <RMarker
+                latitude={feature.properties.LATITUDE}
+                longitude={feature.properties.LONGITUDE}
+              ></RMarker>
+              <RPopup
+                latitude={feature.properties.LATITUDE}
+                longitude={feature.properties.LONGITUDE}
+                offset={markerPopupOffset}
+              >
+                {crime_emojies[feature.properties.OFFENSE]}
+              </RPopup>
+            </>
+          );
+        })}
+        <Overlay>
+          <h2>Dette er et overlay</h2>
+          <p>Legg til funksjonalitet knyttet til kartet.</p>
+          LONG: {clickPoint?.lng}
+          <br />
+          LAT: {clickPoint?.lat}
+        </Overlay>
+        <Overlay>
+          <h2>Live Aircraft Around Washington DC</h2>
+          <p>
+            Click on aircraft markers to see flight details. Data updates every
+            10 seconds.
+          </p>
+        </Overlay>
+        <DrawComponent />
+        <AircraftLayer />
+      </RMap>
+      <AircraftStatus />
+    </div>
   );
 };
 
