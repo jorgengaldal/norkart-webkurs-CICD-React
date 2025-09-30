@@ -38,6 +38,10 @@ export const MapLibreMap = () => {
   const crime_emojies = {
     'ASSAULT W/DANGEROUS WEAPON': '🗡️',
     'THEFT/OTHER': '💰',
+    'MOTOR VEHICLE THEFT': '🚗',
+    'BURGLARY': '🏠',
+    'ROBBERY': '🏴‍☠️',
+    'THEFT F/AUTO': '🚘'
   };
 
   const tidspunkt = {
