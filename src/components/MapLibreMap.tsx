@@ -83,7 +83,7 @@ export const MapLibreMap = () => {
                 longitude={feature.properties.LONGITUDE}
                 offset={markerPopupOffset}
               >
-                {crime_emojies[feature.properties.OFFENSE]}
+                {crime_emojies[feature.properties.OFFENSE] ?? '🦹'}
               </RPopup>
             </>
           );
