@@ -13,6 +13,7 @@ import { Overlay } from './Overlay';
 import DrawComponent from './DrawComponent';
 import AircraftLayer from './AircraftLayer';
 import AircraftStatus from './AircraftStatus';
+import CustomMarker from './CustomMarker';
 
 const WASHINGTON_DC_COORDS: [number, number] = [-77.0369, 38.9072];
 
@@ -37,6 +38,12 @@ export const MapLibreMap = () => {
   const crime_emojies = {
     'ASSAULT W/DANGEROUS WEAPON': '🗡️',
     'THEFT/OTHER': '💰',
+  };
+
+  const tidspunkt = {
+    DAY: '#f0e039ff',
+    EVENING: '#9142ffff',
+    MIDNIGHT: '#643875ff',
   };
 
   useEffect(() => {
@@ -66,7 +73,11 @@ export const MapLibreMap = () => {
               <RMarker
                 latitude={feature.properties.LATITUDE}
                 longitude={feature.properties.LONGITUDE}
-              ></RMarker>
+              >
+                <CustomMarker
+                  color={tidspunkt[feature.properties.SHIFT]}
+                ></CustomMarker>
+              </RMarker>
               <RPopup
                 latitude={feature.properties.LATITUDE}
                 longitude={feature.properties.LONGITUDE}
