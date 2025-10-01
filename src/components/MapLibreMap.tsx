@@ -39,9 +39,9 @@ export const MapLibreMap = () => {
     'ASSAULT W/DANGEROUS WEAPON': '🗡️',
     'THEFT/OTHER': '💰',
     'MOTOR VEHICLE THEFT': '🚗',
-    'BURGLARY': '🏠',
-    'ROBBERY': '🏴‍☠️',
-    'THEFT F/AUTO': '🚘'
+    BURGLARY: '🏠',
+    ROBBERY: '🏴‍☠️',
+    'THEFT F/AUTO': '🚘',
   };
 
   const tidspunkt = {
@@ -56,7 +56,7 @@ export const MapLibreMap = () => {
     fetch(API)
       .then((res) => res.json())
       .then((res) => {
-        setCrimes(res.features.slice(0, 100));
+        setCrimes(res.features.slice(0, 500));
       });
   }, []);
   return (
